@@ -1,0 +1,4 @@
+flask[async]~=3.0.3
+gTTS~=2.5.1
+git+https://github.com/killjoy1221/playsound.git
+sqlalchemy
