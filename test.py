@@ -1,4 +1,4 @@
-'''
+"""
 from gtts import gTTS
 
 from playsound import playsound
@@ -15,25 +15,22 @@ tts.save(audio_file)
 
 # Play the audio
 playsound(audio_file)
-'''
+"""
 
-from database import init_db, db_session
-from models import Word, Tab
-from sqlalchemy import select
-from crud import get_tab_by_id, add_tab, delete_tab_by_id, add_word
+import cruds.tab as t_crud
+import cruds.word as w_crud
+from cruds.association import *
+from database.database import init_db
 
 init_db()
-# db_session.add(Tab(name='test_tab'))
-# db_session.add(Tab(name='test_tab2'))
-# word = Word(word="test", meaning="kiem tra")
-# db_session.add(word)
-# db_session.commit()
-#
-# tab = get_tab_by_id(1)
-# tab2 = get_tab_by_id(2)
-# tab.words.append(word)
-# tab2.words.append(word)
-# db_session.commit()
 
-add_word(word="多谢多谢", meaning="khong biet")
+word1 = w_crud.create(word='你好', meaning='xin chao')
+word2 = w_crud.create(word='对不起', meaning='xin loi')
 
+tab1 = t_crud.create(name="greetings")
+tab2 = t_crud.create(name="sayings")
+
+add_words_to_tab(t=tab1, w=word1)
+add_words_to_tab(t=tab2, w=word1)
+
+t_crud.delete(tab1.id)
