@@ -18,7 +18,6 @@ async def add_word():
     word = request.json.get('word')
     meaning = request.json.get('meaning')
     w = w_crud.create(word, meaning)
-    print(w.__to_dict__())
     return jsonify(w.__to_dict__())
 
 
