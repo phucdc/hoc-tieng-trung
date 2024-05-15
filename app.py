@@ -10,15 +10,19 @@ app = Flask(__name__, template_folder='templates', static_folder='voices')
 async def index():
     words = w_crud.get_all_words()
     tabs = t_crud.get_all_tabs()
-    return render_template('index.html', words=words, tabs=tabs)
-
+    index = render_template('index.html', words=words, tabs=tabs)
+    return index
+    
 
 @app.post('/word/add')
 async def add_word():
     word = request.json.get('word')
     meaning = request.json.get('meaning')
     w = w_crud.create(word, meaning)
-    return jsonify(w.__to_dict__())
+    words = w_crud.get_all_words()
+    tabs = t_crud.get_all_tabs()
+    index = render_template('index.html', words=words, tabs=tabs)
+    return index
 
 
 @app.post('/learn')

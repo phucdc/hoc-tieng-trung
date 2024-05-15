@@ -56,6 +56,8 @@
       .map((checkbox) => checkbox.value);
 
     // Send the selected values to the server
+    // You can use fetch, axios, or any other method to send the data
+    // Example with fetch:
     fetch("/learn", {
       method: "POST",
       headers: {
@@ -63,15 +65,15 @@
       },
       body: JSON.stringify({ word_ids }),
     })
-      .then((response) => response.text())
-      .then((html) => {
-        // Update the entire document with the rendered HTML
-        document.documentElement.innerHTML = html;
-      })
-      .catch((error) => {
-        // Handle any errors
-        console.error(error);
-      });
+    .then((response) => response.text())
+    .then((html) => {
+      // Update the entire document with the rendered HTML
+      document.documentElement.innerHTML = html;
+    })
+    .catch((error) => {
+      // Handle any errors
+      console.error(error);
+    });
   });
 
   function validateInputs() {
@@ -99,30 +101,10 @@
       },
       body: JSON.stringify({ word, meaning }),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        // Create a new table row with the new word data
-        const newRow = document.createElement("tr");
-        newRow.innerHTML = `
-          <th>
-            <div class="form-check">
-              <input class="form-check-input check-item" type="checkbox" value="${
-                data.id
-              }">
-            </div>
-          </th>
-          <td>${tableBody.querySelectorAll("tr").length}</td>
-          <td>${data.word}</td>
-          <td>${data.meaning}</td>
-        `;
-
-        // Append the new row to the table body
-        tableBody.appendChild(newRow);
-
-        // Clear the input fields
-        wordInput.value = "";
-        meaningInput.value = "";
-        addWordBtn.disabled = true;
+      .then((response) => response.text())
+      .then((html) => {
+        // Update the entire document with the rendered HTML
+        document.documentElement.innerHTML = html;
       })
       .catch((error) => {
         // Handle any errors
