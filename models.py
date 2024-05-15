@@ -24,6 +24,13 @@ class Word(Base):
         self.word = word
         self.meaning = meaning
 
+    def __to_dict__(self):
+        return {
+            'id': self.id,
+            'word': self.word,
+            'meaning': self.meaning
+        }
+
 
 class Tab(Base):
     __tablename__ = 'tabs'
@@ -35,10 +42,15 @@ class Tab(Base):
     def __init__(self, name):
         self.name = name
 
+    def __to_dict__(self):
+        return {
+            'id': self.id,
+            'name': self.name
+        }
+
 
 @event.listens_for(Word, 'after_delete')
 def remove_word_from_tabs(mapper, connection, target):
-    """Event listener to remove the deleted word from associated tabs."""
     connection.execute(
         word_tab_association.delete().where(
             word_tab_association.c.word_id == target.id
@@ -48,7 +60,6 @@ def remove_word_from_tabs(mapper, connection, target):
 
 @event.listens_for(Tab, 'after_delete')
 def remove_tab_from_words(mapper, connection, target):
-    """Event listener to remove the deleted tab from associated words."""
     connection.execute(
         word_tab_association.delete().where(
             word_tab_association.c.tab_id == target.id

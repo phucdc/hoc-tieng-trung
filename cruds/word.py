@@ -54,8 +54,13 @@ def delete(word_id: int) -> None | Word:
         return
 
 
-def get_random_words(page: int) -> list:
+def get_random_words(page: int=10) -> list:
     all_words = db.query(Word).all()
     if page >= len(all_words):
         return all_words
     return random.sample(all_words, page)
+
+
+def get_all_words() -> list:
+    all_words = db.query(Word).all()
+    return all_words

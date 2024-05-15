@@ -24,13 +24,6 @@ from database.database import init_db
 
 init_db()
 
-word1 = w_crud.create(word='你好', meaning='xin chao')
-word2 = w_crud.create(word='对不起', meaning='xin loi')
-
-tab1 = t_crud.create(name="greetings")
-tab2 = t_crud.create(name="sayings")
-
-add_words_to_tab(t=tab1, w=word1)
-add_words_to_tab(t=tab2, w=word1)
-
-t_crud.delete(tab1.id)
+t_crud.create(name='Noun')
+t_crud.create(name='Verb')
+t_crud.create(name='Adj')

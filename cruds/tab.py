@@ -45,3 +45,8 @@ def delete(tab_id: int) -> None | Tab:
         return tab
     except Exception as e:
         return
+    
+    
+def get_all_tabs() -> list:
+    tabs = db.query(Tab).all()
+    return tabs
