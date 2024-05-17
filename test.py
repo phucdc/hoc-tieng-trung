@@ -24,15 +24,10 @@ from database.database import init_db
 
 init_db()
 
-w_crud.create('her', 'của cô ấy')
-w_crud.create('his', 'của anh ấy')
-w_crud.create('he', 'anh ấy')
-w_crud.create('she', 'cô ấy')
-w_crud.create('i', 'tôi')
-w_crud.create('they', 'họ, bọn họ, ...')
-w_crud.create('we', 'chúng ta, chúng tôi')
-w_crud.create('our', 'của chúng tôi')
-w_crud.create('you', 'bạn, ông, anh, ... (ám chỉ đối phương trong cuộc trò chuyện 2 người)')
+w_crud.create('her', 'hơ', 'của cô ấy')
+w_crud.create('his', 'hít', 'của anh ấy')
+w_crud.create('he', 'hi', 'anh ấy')
+w_crud.create('she', 'si', 'cô ấy')
 
 
 t_crud.create(name='Noun')

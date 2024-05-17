@@ -17,8 +17,8 @@ def read(word_id: int) -> None | Word:
     return word
 
 
-def create(word: str, meaning: str) -> None | Word:
-    w = Word(word=word, meaning=meaning)
+def create(word: str, pinyin: str, meaning: str) -> None | Word:
+    w = Word(word=word, pinyin=pinyin, meaning=meaning)
     try:
         db.add(w)
         db.commit()
@@ -29,13 +29,14 @@ def create(word: str, meaning: str) -> None | Word:
         return
 
 
-def update(word_id: int, word: str = None, meaning: str = None) -> None | Word:
+def update(word_id: int, pinyin: str, word: str = None, meaning: str = None) -> None | Word:
     w = db.query(Word).filter_by(Word.id == word_id).one()
     if not w:
         return
     try:
         w.word = word if word else w.word
         w.meaning = meaning if meaning else w.meaning
+        w.pinyin = pinyin if pinyin else w.pinyin
         db.commit()
         return w
     except IntegrityError as ie:

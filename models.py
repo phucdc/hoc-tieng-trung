@@ -17,18 +17,21 @@ class Word(Base):
 
     id = Column(Integer, primary_key=True)
     word = Column(String, unique=True, nullable=False)
+    pinyin = Column(String, nullable=False)
     meaning = Column(String, nullable=False)
     tab_ids = relationship('Tab', secondary=word_tab_association, back_populates='words')
 
-    def __init__(self, word, meaning):
+    def __init__(self, word, pinyin, meaning):
         self.word = word
+        self.pinyin = pinyin
         self.meaning = meaning
 
     def __to_dict__(self):
         return {
             'id': self.id,
             'word': self.word,
-            'meaning': self.meaning
+            'meaning': self.meaning,
+            'pinyin': self.pinyin
         }
 
 

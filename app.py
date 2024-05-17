@@ -4,6 +4,7 @@ import cruds.word as w_crud
 from database.database import init_db
 from config import APP_DIR, SAVE_VOICE_DIR
 import os
+import random
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 
@@ -32,11 +33,12 @@ async def index():
 @app.post('/word/add')
 async def add_word():
     word = request.json.get('word')
+    pinyin = request.json.get('pinyin')
     meaning = request.json.get('meaning')
-    w = w_crud.create(word, meaning)
+    w = w_crud.create(word, pinyin, meaning)
     words = w_crud.get_all_words()
     tabs = t_crud.get_all_tabs()
-    index = render_template('index.html', words=words, tabs=tabs)
+    index = render_template('main-section.html', words=words, tabs=tabs)
     return index
 
 
@@ -51,6 +53,34 @@ async def learn():
             words.append(word)
     tabs = t_crud.get_all_tabs()
     return render_template('learn.html', words=words, tabs=tabs)
+
+
+@app.post('/tab/add_word')
+async def add_to_tab():
+    print(request.json)
+    word_ids = request.json['word_ids']
+    tab_id = request.json['tab_id']
+    for id in word_ids:
+        t_crud.add_word_to_tab(word_id=id, tab_id=tab_id)
+    return tab_id
+
+
+@app.post('/tab/get_words')
+async def get_words_from_tab():
+    tab_id = request.json['tab_id']
+    res = []
+    for word in t_crud.get_words_from_tab(tab_id=tab_id):
+        res.append(word.__to_dict__())
+    tabs = t_crud.get_all_tabs()
+    return render_template('learn.html', words=res, tabs=tabs)
+
+
+@app.post('/tab/add')
+async def add_tab():
+    name = request.json['tab_name']
+    tab = t_crud.create(name=name)
+    tabs = t_crud.get_all_tabs()
+    return render_template('tab.html', tabs=tabs)
 
 
 if __name__ == '__main__':

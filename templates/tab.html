@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-md-6">
+    <a href="/" class="btn btn-warning">All words</a>
+    {% for tab in tabs %}<button
+      type="button"
+      class="btn btn-outline-dark"
+      id="tab-{{ loop.index }}"
+      value="{{ tab.id }}"
+    >
+      {{ tab.name }}</button
+    >{% endfor %}
+  </div>
+  <div class="col-md-3">
+    <input type="text" id="input-add-tab" class="form-control" />
+  </div>
+  <div class="col-md-3">
+    <button type="button" class="btn btn-success" id="btn-add-tab">
+      Add tab
+    </button>
+  </div>
+</div>
