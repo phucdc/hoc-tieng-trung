@@ -1,7 +1,7 @@
 import random
 
 from gtts import gTTS
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, PendingRollbackError
 
 from config import SAVE_VOICE_DIR
 from database.database import db_session
@@ -25,8 +25,9 @@ def create(word: str, pinyin: str, meaning: str) -> None | Word:
         tts = gTTS(text=word, lang='zh-cn')
         tts.save(f'{SAVE_VOICE_DIR}/{w.word}.mp3')
         return w
-    except IntegrityError as ie:
-        return
+    except Exception as e:
+        db.rollback()
+        return e.__str__
 
 
 def update(word_id: int, pinyin: str, word: str = None, meaning: str = None) -> None | Word:

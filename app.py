@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template, url_for, send_file
+import openpyxl
 import cruds.tab as t_crud
 import cruds.word as w_crud
 from database.database import init_db
@@ -7,6 +8,7 @@ import os
 import random
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 
 @app.context_processor
@@ -83,8 +85,30 @@ async def add_tab():
     return render_template('tab.html', tabs=tabs)
 
 
+@app.post("/import")
+async def import_handle():
+    validate_header = 'word,pinyin,meaning'
+    f = request.files.get('list')
+    if f:
+        data = f.stream
+        workbook = openpyxl.load_workbook(data, data_only=True)
+        worksheet = workbook.active
+        
+        header_row = next(worksheet.iter_rows(min_row=1, values_only=True))
+        
+        if ','.join(header_row).lower() == validate_header:
+            for row in worksheet.iter_rows(min_row=2, values_only=True):
+                word, pinyin, meaning = row
+                w_crud.create(word=word, pinyin=pinyin, meaning=meaning)
+                
+            return render_template('import.html', color="success", status="Succeed")
+        
+    return render_template('import.html', color="danger", status="Failed")
+
+
 if __name__ == '__main__':
+    init_db()
     app.run(
-        host='localhost',
+        host='0.0.0.0',
         port=8000
     )

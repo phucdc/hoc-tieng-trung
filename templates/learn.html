@@ -15,7 +15,7 @@
     <tbody>
         {% for word in words %}
         <tr id="word-row-{{ loop.index }}">
-            <td>{{ loop.index }}</td>
+            <td id="col-index">{{ loop.index }}</td>
             {% set filename = word.word + '.mp3' %}
             <td>
                 <audio id="player-{{ loop.index }}" src="{{ storage(filename) }}"></audio>

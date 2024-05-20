@@ -12,13 +12,23 @@ function main_section_attach() {
   const inputPinyin = document.getElementById("add-word-input-pinyin");
   const inputMeaning = document.getElementById("add-word-input-meaning");
   const shuffle = document.getElementById("shuffle");
+  const tbody = document.getElementsByTagName("tbody")[0];
+
+  const shuffler = (array) => { 
+    return array.sort(() => Math.random() - 0.5); 
+  }; 
 
   if (shuffle != null) {
     shuffle.addEventListener("click", () => {
-      word_rows = document.querySelectorAll('tr[id^="word-row-"]');
-      word_rows.forEach((row) => {
-        console.log(row.children)
+      rows = Array.from(document.querySelectorAll("tr[id^='word-row-']"));
+      var shuffled = shuffler(rows);
+      var i = 1;
+      shuffled.forEach((trow) => {
+        trow.children[0].innerText = i;
+        i++;
+        tbody.appendChild(trow);
       });
+
     });
   }
 
